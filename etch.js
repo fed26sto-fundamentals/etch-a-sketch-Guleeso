@@ -1,15 +1,29 @@
 let color = "black";
+let click = false;
 
-document.addEventListener("DOMContentLoaded", function(){
-    createBoard (16);
+document.addEventListener("DOMContentLoaded", function () {
+    createBoard(16);
+
+    document.querySelector("body").addEventListener("click", function (e) {
+        if (e.target.tagName != "BUTTON") {
+            click = !click;
+            let draw = document.querySelector("#draw");
+            if (click) {
+                draw.innerHTML = "Now You Can Draw";
+            } else {
+                draw.innerHTML = "You cannot draw";
+            }
+        }
+    });
+
     let btn_popup = document.querySelector("#popup");
-    btn_popup.addEventListener("click", function(){
+    btn_popup.addEventListener("click", function (e) {
         let size = getSize();
         createBoard(size);
     })
-})
+});
 
-function createBoard(size){
+function createBoard(size) {
     let board = document.querySelector(".board");
 
     board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
@@ -17,7 +31,7 @@ function createBoard(size){
 
     let numDivs = size * size;
 
-    for(let i = 0; i < numDivs; i++){
+    for (let i = 0; i < numDivs; i++) {
         let div = document.createElement("div");
         div.addEventListener("mouseover", colorDiv);
         board.insertAdjacentElement("beforeend", div);
@@ -26,31 +40,34 @@ function createBoard(size){
 
 }
 
-function getSize(){
+function getSize() {
     let input = prompt("What size should the board be?")
     let message = document.querySelector("#message")
-    if(input == ""){
+    if (input == "") {
         message.innerHTML = "please provide a number";
 
     }
-    else if(input < 0 || input > 100){
+    else if (input < 0 || input > 100) {
         message.innerHTML = "Please provice a number between 1 and 100"
     }
-    else{
+    else {
         message.innerHTML = "Now you play!"
         return input;
     }
 }
 
-function colorDiv(){
-    if(color == "random"){
-        this.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`
+function colorDiv() {
+    if (click) {
+        if (color == "random") {
+            this.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`
+        }
+        else
+            this.style.backgroundColor = 'black'
     }
-    else
-    this.style.backgroundColor = 'black'
 }
 
-function setColor(colorChoice){
+
+function setColor(colorChoice) {
     color = colorChoice;
 
 }
